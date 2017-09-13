@@ -12,7 +12,7 @@ local function file_to_table(fname)
 end
 
 describe("Modeline parser", function()
-    files = {
+    local files = {
         {
             "tests/file1.in",
             nil,

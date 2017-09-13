@@ -20,6 +20,10 @@ vis.events.subscribe(vis.events.WIN_OPEN, modeline.event_read_modeline)
 
 The reason why `vis-modelines` exports the event function as a module and doesn't set it directly, is that the order the events are called is the order the events are registered. `event_read_modeline` needs to be called *after* the typical intialization, so settings from the modeline are not overwritten by those defaults.
 
+### Notes
+
+The unit tests require the [busted](https://github.com/Olivine-Labs/busted) lua unit testing framework.
+
 ### TODO
 
-- [ ] Write unit tests
+- [x] Write unit tests

@@ -45,7 +45,7 @@ local vim = P(" vim") * ver * ":"           -- only 'vim', 'Vim' can have
 
 local whitespace = S('\t ')^1               -- atleast one whitespace character
 local optwhitespace = whitespace + P("")    -- 0 or more whitespace characters
-local prefix = (1-vim)^0 * vim
+local prefix = (1-vim)^0 * vim * optwhitespace
 
 -- The options can basically be arbitrarily insane. I have no idea what
 -- characters can be used.
@@ -53,15 +53,15 @@ local optchars = R("az", "AZ") + R("09") + S("_\"\'")
 local option = Ct(C(optchars^1) * "=" * C(optchars^1)) + C(optchars^1)
 
 local set = P("set") + P("se")
-local setstyle = optwhitespace * set * (whitespace * option)^0 * P(":")^-1
+local setstyle = set * (whitespace * option)^0 * P(":")^-1
 local separator = (optwhitespace * P(":") * optwhitespace) + whitespace
-local colonstyle = optwhitespace * option * (separator * option)^0
+local colonstyle = option * (separator * option)^0
 
 -- matches & captures options
 local modeline = Ct(prefix * (setstyle + colonstyle))
 
 -- detects modelines
-local modeline_detect = prefix * whitespace
+local modeline_detect = prefix * optwhitespace
 
 -- Simple Vim settings like 'autoindent' without options are mapped directly to
 -- a command for Vis. If the settings is a variable (like 'ft=lua'), a mapping
@@ -109,8 +109,12 @@ local command_mapping = {
 }
 
 function M.parse_modeline(line)
+    return modeline:match(line)
+end
+
+function M.map_options(line)
     local commands = {}
-    local opts = modeline:match(line)
+    local opts = M.parse_modeline(line)
     if not opts then return nil end
 
     for _,o in pairs(opts) do
@@ -161,9 +165,9 @@ function M.event_read_modeline(win)
     if not file then return end
     local ml = M.find_modeline(file.lines)
     if not ml then return end
-    local commands = M.parse_modeline(ml)
-    for _,i in pairs(commands) do
-        vis:command(i)
+    local commands = M.map_options(ml)
+    for _,c in pairs(commands) do
+        vis:command(c)
     end
 end
 

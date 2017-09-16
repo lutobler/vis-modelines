@@ -11,8 +11,8 @@ Vim (by default) looks for modelines in the first 5 and last 5 lines of the file
 
 This parser assumes you will only use *one* modeline per file, to avoid having to resolve conflicts. It will use the first modeline it finds from the top.
 
-### Usage
-Add this to your `visrc.lua`:
+### Installation
+Add the Lua file to you Vis path (`~/.config/vis`) and add this to your `visrc.lua`:
 ```
 local modeline = require("vis-modelines")
 vis.events.subscribe(vis.events.WIN_OPEN, modeline.event_read_modeline)

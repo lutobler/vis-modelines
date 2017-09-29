@@ -34,28 +34,25 @@ local M = {}
 -- Colon style, modeline continues to the end of the line. Delimeter is
 -- whitespace or ':'.
 -- E.g.: vim: noai:ts=4:sw=4 ft=lua
+--
+-- (All parsing based on the information in :help modeline)
 
-local digit = R("09")
-local num = digit * digit * digit           -- 3-digit version number
-local ver = (S("><=") * num) + num + P("")
-local vim = P(" vim") * ver * ":"           -- only 'vim', 'Vim' can have
-            + P(" Vim") * ver * ":"         -- version numbers
-            + P(" vi:")
-            + P(" ex:")
+local digit         = R("09")
+local num           = digit * digit * digit
+local ver           = (S("><=") * num) + num + P("")
+local vim           = P(" vim")*ver*":" + " Vim"*ver*":" + " vi:" + " ex:"
 
-local whitespace = S('\t ')^1               -- atleast one whitespace character
-local optwhitespace = whitespace + P("")    -- 0 or more whitespace characters
-local prefix = (1-vim)^0 * vim * optwhitespace
+local whitespace    = S("\t ")^1
+local optwhitespace = whitespace + P("")
+local prefix        = (1-vim)^0 * vim * optwhitespace
 
--- The options can basically be arbitrarily insane. I have no idea what
--- characters can be used.
-local optchars = R("az", "AZ") + R("09") + S("_\"\'")
-local option = Ct(C(optchars^1) * "=" * C(optchars^1)) + C(optchars^1)
+local optchars      = R("az", "AZ") + R("09") + S("_\"\'")
+local option        = Ct(C(optchars^1) * "=" * C(optchars^1)) + C(optchars^1)
 
-local set = P("set") + P("se")
-local setstyle = set * (whitespace * option)^0 * P(":")^-1
-local separator = (optwhitespace * P(":") * optwhitespace) + whitespace
-local colonstyle = option * (separator * option)^0
+local set           = P("set") + P("se")
+local setstyle      = set * (whitespace * option)^0 * P(":")^-1
+local separator     = (optwhitespace * P(":") * optwhitespace) + whitespace
+local colonstyle    = option * (separator * option)^0
 
 -- matches & captures options
 local modeline = Ct(prefix * (setstyle + colonstyle))

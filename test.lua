@@ -66,6 +66,12 @@ describe("Modeline parser", function()
             "-- Vim: ft=lua",
             { { "ft", "lua" } },
             { "set syntax lua" }
+        },
+        {
+            "tests/file10.in",
+            "\" vim:ft=vim:fdm=marker",
+            { { "ft", "vim"}, {"fdm", "marker"} },
+            { "set syntax vim" }
         }
     }
 

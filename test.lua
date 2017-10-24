@@ -66,19 +66,19 @@ describe("Modeline parser", function()
             "-- Vim: ft=lua",
             { { "ft", "lua" } },
             { "set syntax lua" }
+        },
+        {
+            "tests/file10.in",
+            "\" vim:ft=vim:fdm=marker",
+            { { "ft", "vim"}, {"fdm", "marker"} },
+            { "set syntax vim" }
         }
     }
 
     it("should correctly detect modelines in files", function()
-        assert.is_true(m.find_modeline(file_to_table(files[1][1])) == files[1][2])
-        assert.is_true(m.find_modeline(file_to_table(files[2][1])) == files[2][2])
-        assert.is_true(m.find_modeline(file_to_table(files[3][1])) == files[3][2])
-        assert.is_true(m.find_modeline(file_to_table(files[4][1])) == files[4][2])
-        assert.is_true(m.find_modeline(file_to_table(files[5][1])) == files[5][2])
-        assert.is_true(m.find_modeline(file_to_table(files[6][1])) == files[6][2])
-        assert.is_true(m.find_modeline(file_to_table(files[7][1])) == files[7][2])
-        assert.is_true(m.find_modeline(file_to_table(files[8][1])) == files[8][2])
-        assert.is_true(m.find_modeline(file_to_table(files[9][1])) == files[9][2])
+        for i = 1, #files do
+            assert.is_true(m.find_modeline(file_to_table(files[i][1])) == files[i][2])
+        end
     end)
 
     it("should parse modelines correctly", function()
@@ -87,15 +87,9 @@ describe("Modeline parser", function()
             if not ml then return nil end
             return m.parse_modeline(ml)
         end
-        assert.are.same(parse(1), files[1][3])
-        assert.are.same(parse(2), files[2][3])
-        assert.are.same(parse(3), files[3][3])
-        assert.are.same(parse(4), files[4][3])
-        assert.are.same(parse(5), files[5][3])
-        assert.are.same(parse(6), files[6][3])
-        assert.are.same(parse(7), files[7][3])
-        assert.are.same(parse(8), files[8][3])
-        assert.are.same(parse(9), files[9][3])
+        for i = 1, #files do
+            assert.are.same(parse(i), files[i][3])
+        end
     end)
 
     it("should map the right options for vis", function()
@@ -104,14 +98,8 @@ describe("Modeline parser", function()
             if not ml then return { } end
             return m.map_options(ml)
         end
-        assert.are.same(map(1), files[1][4])
-        assert.are.same(map(2), files[2][4])
-        assert.are.same(map(3), files[3][4])
-        assert.are.same(map(4), files[4][4])
-        assert.are.same(map(5), files[5][4])
-        assert.are.same(map(6), files[6][4])
-        assert.are.same(map(7), files[7][4])
-        assert.are.same(map(8), files[8][4])
-        assert.are.same(map(9), files[9][4])
+        for i = 1, #files do
+            assert.are.same(map(i), files[i][4])
+        end
     end)
 end)

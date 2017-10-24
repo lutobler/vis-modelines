@@ -22,7 +22,7 @@ The reason why `vis-modelines` exports the event function as a module and doesn'
 
 ### Notes
 
-The unit tests require the [busted](https://github.com/Olivine-Labs/busted) lua unit testing framework.
+The unit tests require the [busted](https://github.com/Olivine-Labs/busted) Lua unit testing framework.
 
 ### TODO
 

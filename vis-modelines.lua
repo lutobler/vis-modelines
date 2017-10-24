@@ -28,7 +28,7 @@ local M = {}
 
 -- vim has two styles for modelines:
 --
--- 'set' style, can be delimeted with a : at the end. Delimter is whitespace.
+-- 'set' style, can be delimeted with a : at the end. Delimiter is whitespace.
 -- E.g.: vim: set ft=lua sw=2 ts=2 autoindent:
 --
 -- Colon style, modeline continues to the end of the line. Delimeter is
@@ -39,7 +39,7 @@ local M = {}
 
 local digit         = R("09")
 local num           = digit * digit * digit
-local ver           = (S("><=") * num) + num + P("")
+local ver           = S("><=") * num + num + P("")
 local vim           = P(" vim")*ver*":" + " Vim"*ver*":" + " vi:" + " ex:"
 
 local whitespace    = S("\t ")^1

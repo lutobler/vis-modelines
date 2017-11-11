@@ -12,13 +12,12 @@ Vim (by default) looks for modelines in the first 5 and last 5 lines of the file
 This parser assumes you will only use *one* modeline per file, to avoid having to resolve conflicts. It will use the first modeline it finds from the top.
 
 ### Installation
+
 Add the Lua file to you Vis path (`~/.config/vis`) and add this to your `visrc.lua`:
 ```
-local modeline = require("vis-modelines")
-vis.events.subscribe(vis.events.WIN_OPEN, modeline.event_read_modeline)
+require("vis-modelines")
 ```
-
-The reason why `vis-modelines` exports the event function as a module and doesn't set it directly, is that the order the events are called is the order the events are registered. `event_read_modeline` needs to be called *after* the typical intialization, so settings from the modeline are not overwritten by those defaults.
+The settings from the modeline will be applied *after* Vis is initialized, with the `vis.events.START` 
 
 ### Notes
 

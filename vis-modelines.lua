@@ -24,8 +24,6 @@
 local lpeg = require("lpeg")
 local P, C, Ct, R, S = lpeg.P, lpeg.C, lpeg.Ct, lpeg.R, lpeg.S
 
-local M = {}
-
 -- vim has two styles for modelines:
 --
 -- 'set' style, can be delimeted with a : at the end. Delimiter is whitespace.
@@ -105,13 +103,13 @@ local command_mapping = {
     tabstop         = ts_f
 }
 
-function M.parse_modeline(line)
+local function parse_modeline(line)
     return modeline:match(line)
 end
 
-function M.map_options(line)
+local function map_options(line)
     local commands = {}
-    local opts = M.parse_modeline(line)
+    local opts = parse_modeline(line)
     if not opts then return nil end
 
     for _,o in pairs(opts) do
@@ -131,7 +129,7 @@ function M.map_options(line)
     return commands
 end
 
-function M.find_modeline(lines)
+local function find_modeline(lines)
     if not lines then return nil end
     if #lines < 10 then
         for i=1,#lines do
@@ -157,15 +155,14 @@ function M.find_modeline(lines)
     return nil
 end
 
-function M.event_read_modeline(win)
-    local file = win.file
+vis.events.subscribe(vis.events.START, function()
+    local file = vis.win.file
     if not file then return end
-    local ml = M.find_modeline(file.lines)
+    local ml = find_modeline(file.lines)
     if not ml then return end
-    local commands = M.map_options(ml)
+    local commands = map_options(ml)
     for _,c in pairs(commands) do
         vis:command(c)
     end
-end
+end)
 
-return M

@@ -17,7 +17,7 @@ Add the Lua file to you Vis path (`~/.config/vis`) and add this to your `visrc.l
 ```
 require("vis-modelines")
 ```
-The settings from the modeline will be applied *after* Vis is initialized, with the `vis.events.START` 
+The settings from the modeline will be applied *after* Vis is initialized, with the `vis.events.START` event callback.
 
 ### Notes
 

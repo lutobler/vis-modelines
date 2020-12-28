@@ -13,9 +13,10 @@ This parser assumes you will only use *one* modeline per file, to avoid having t
 
 ### Installation
 
-Add the Lua file to you Vis path (`~/.config/vis`) and add this to your `visrc.lua`:
+Clone the repo to your vis plugins directory (`~/.config/vis/plugins`) and add
+this to your `visrc.lua`:
 ```
-require("vis-modelines")
+require("plugins/vis-modelines")
 ```
 The settings from the modeline will be applied *after* Vis is initialized, with the `vis.events.START` event callback.
 
